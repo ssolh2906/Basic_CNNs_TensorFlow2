@@ -71,7 +71,8 @@ class SplitDataset():
     def __copy_files(self, type_path, type_saved_dir):
         for item in type_path:  # item 1차원리스트 : [self.index_label_dict[index][class], self.index_label_dict[index][subclass], 잘린filepathlist[]]
             src_path_list = item[1]  # list
-            dst_path = type_saved_dir + "%s/" % (item[0]["class"]) + "%s/" % (item[0]["subclass"])  # item[0] + item[1]
+            dst_path = "%s/" % self.saved_dataset_dir + "%s/" % (item[0]["class"]) + type_saved_dir[
+                                                                             len(self.saved_dataset_dir)+1:] + "%s/" % (item[0]["subclass"])  # item[0] + item[1]
             if not os.path.exists(dst_path):
                 os.makedirs(dst_path)
             for src_path in src_path_list:
