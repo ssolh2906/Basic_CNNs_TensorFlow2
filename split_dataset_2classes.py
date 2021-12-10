@@ -27,6 +27,8 @@ class SplitDataset():
 
         self.show_progress = show_progress
 
+        self.json_missing = []
+
         if not os.path.exists(self.saved_train_dir):
             os.mkdir(self.saved_train_dir)
         if not os.path.exists(self.saved_test_dir):
@@ -75,10 +77,17 @@ class SplitDataset():
             for src_path in src_path_list:
                 json_src_path = src_path[:-3] + "json"
                 shutil.copy(src_path, dst_path)
-                shutil.copy(json_src_path, dst_path)
                 if self.show_progress:
                     print("Copying file " + src_path + " to " + dst_path)
-                    print("Copying file " + json_src_path + " to " + dst_path)
+
+                if os.path.isfile(json_src_path):
+                    shutil.copy(json_src_path, dst_path)
+                    if self.show_progress:
+                        print("Copying file " + json_src_path + " to " + dst_path)
+                else :
+                    self.json_missing.append(src_path)
+
+
 
     def __split_dataset(self):
         all_file_paths = self.__get_all_file_path()  # >>all_file_path = [[class1-B001 내부모든파일], [class1-B002 내부모든파일...],....] 2차원배열
@@ -106,6 +115,9 @@ class SplitDataset():
         self.__copy_files(type_path=self.train_file_path, type_saved_dir=self.saved_train_dir)
         self.__copy_files(type_path=self.valid_file_path, type_saved_dir=self.saved_valid_dir)
         self.__copy_files(type_path=self.test_file_path, type_saved_dir=self.saved_test_dir)
+        if len(self.json_missing) != 0 :
+            print("JSON MISSING!")
+            print(*self.json_missing, sep='\n')
 
 
 if __name__ == '__main__':
