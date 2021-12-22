@@ -31,12 +31,12 @@ class SplitDataset():
 
         self.json_missing = []
 
-        if not os.path.exists(self.saved_train_dir):
-            os.mkdir(self.saved_train_dir)
-        if not os.path.exists(self.saved_test_dir):
-            os.mkdir(self.saved_test_dir)
-        if not os.path.exists(self.saved_valid_dir):
-            os.mkdir(self.saved_valid_dir)
+        # if not os.path.exists(self.saved_train_dir):
+        #     os.mkdir(self.saved_train_dir)
+        # if not os.path.exists(self.saved_test_dir):
+        #     os.mkdir(self.saved_test_dir)
+        # if not os.path.exists(self.saved_valid_dir):
+        #     os.mkdir(self.saved_valid_dir)
 
     def __get_label_names(self):
         label_names = []
