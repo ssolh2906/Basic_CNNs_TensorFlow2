@@ -3,13 +3,12 @@ args 2개로 이미지 사이즈 입력
 args = x, y
 '''
 import os
-import shutil
-import sys
+import argparse
 from configuration import TRAIN_SET_RATIO, TEST_SET_RATIO
 from PIL import Image
 
-global target_size_x
-global target_size_y
+#global target_size_x
+#global target_size_y
 
 # Split Dataset 3
 # Start~End frame 들을 한 세트로 움직임
@@ -19,9 +18,6 @@ class SplitDataset():
                  show_progress=False):
         self.dataset_dir = dataset_dir  # original data set
         self.saved_dataset_dir = saved_dataset_dir  # data set(result folder)
-        self.saved_train_dir = saved_dataset_dir + "/train/"
-        self.saved_valid_dir = saved_dataset_dir + "/valid/"
-        self.saved_test_dir = saved_dataset_dir + "/test/"
         self.exception_dir = dataset_dir + "/size_exception/"
         # [self.index_label_dict[index][class], self.index_label_dict[index][subclass], list((경로,[S01.jpg,M01.jpg]),(경로2,[S01,M01,E01] ),...)]
 
@@ -30,17 +26,7 @@ class SplitDataset():
 
         self.show_progress = show_progress
 
-        if not os.path.exists(self.exception_dir):
-            os.mkdir(self.exception_dir)
-
-        self.json_missing = []
-
-        # if not os.path.exists(self.saved_train_dir):
-        #     os.mkdir(self.saved_train_dir)
-        # if not os.path.exists(self.saved_test_dir):
-        #     os.mkdir(self.saved_test_dir)
-        # if not os.path.exists(self.saved_valid_dir):
-        #     os.mkdir(self.saved_valid_dir)
+        self.size_error_count = 0
 
     def __get_label_names(self):
         label_names = []
@@ -84,6 +70,7 @@ class SplitDataset():
             all_file_path.append(file_path)
         return all_file_path  # list of list , 행 : class/subclass 열 : filename
 
+
     def start_cleansing(self):
         all_file_paths = self.__get_all_file_path()
 
@@ -93,30 +80,33 @@ class SplitDataset():
                     if 'jpg' in file:
                         full_file_path = key+file
                         image = Image.open(full_file_path)
+                        image_size = image.size
+                        image.close()
 
                         # size exception file found
-                        if image.size[0] != target_size_x or image.size[1] != target_size_y :
-                            dir_lv3 = os.path.split(full_file_path)
-                            dir_lv2 = os.path.split(dir_lv3[0])
-                            dir_lv1 = os.path.split(dir_lv2[0])
-
+                        if image_size[0] != target_size_x or image_size[1] != target_size_y :
+                            self.size_error_count += 1
                             if self.show_progress:
-                                print("[Image size exception] :", full_file_path)
+                                print("[Image size exception] :",image_size, full_file_path)
+        if self.size_error_count == 0:
+            print("No Size Error found")
+        else :
+            print("File size Error Count :", self.size_error_count)
 
-
-
-
-
-
-
-
-
-
+def parser_init():
+    global target_size_x
+    global target_size_y
+    parser = argparse.ArgumentParser(description="Find image sets contain a image not right size")
+    parser.add_argument("-x",type=int, help="Width of Image(Pixels), default = 224",default=224)
+    parser.add_argument("-y",type=int, help="Height of Image(Pixels), default = 224",default=224)
+    args = parser.parse_args()
+    target_size_x = args.x
+    target_size_y = args.y
 
 
 if __name__ == '__main__':
-    target_size_x = sys.argv[1]
-    target_size_y = sys.argv[2]
+    parser_init()
+
     split_dataset = SplitDataset(dataset_dir="original_dataset",
                                  saved_dataset_dir="dataset",
                                  show_progress=True)
