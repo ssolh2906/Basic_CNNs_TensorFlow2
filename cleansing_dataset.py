@@ -104,42 +104,16 @@ class SplitDataset():
                                 print("[Image size exception] :", full_file_path)
                             dst_path = os.path.join(self.exception_dir, dir_lv1[1])
                             dst_path = os.path.join(dst_path, dir_lv2[1])
-                            file_name = os.path.split(key + other_file)[1]
+
                             if not os.path.exists(dst_path):
                                 os.makedirs(dst_path, exist_ok = True)
 
                             for other_file in file_list:
+                                file_name = os.path.split(key + other_file)[1]
                                 shutil.move(key+other_file, os.path.join(dst_path, file_name))
                                 if self.show_progress:
                                     print("move :", key+other_file, "to..",os.path.join(dst_path,file_name))
                             break
-
-
-
-
-    def start_comparing(self):
-        all_file_paths = self.__get_all_file_path()
-        targets = ["S01.jpg", "M01.jpg", "E01.jpg"]
-        for action in all_file_paths: #action : dict
-            for key, file_list in action.items():
-                missing = False
-                missing_files = []
-                for target in targets :
-                    if target not in file_list:
-                        missing = True
-                        missing_files.append(target)
-                if missing:
-                    print("MISSING FRAMES IN ", key)
-                    print(missing_files)
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

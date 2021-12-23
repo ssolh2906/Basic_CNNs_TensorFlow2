@@ -104,21 +104,6 @@ class SplitDataset():
                                 print("[Image size exception] :", full_file_path)
 
 
-    def start_comparing(self):
-        all_file_paths = self.__get_all_file_path()
-        targets = ["S01.jpg", "M01.jpg", "E01.jpg"]
-        for action in all_file_paths: #action : dict
-            for key, file_list in action.items():
-                missing = False
-                missing_files = []
-                for target in targets :
-                    if target not in file_list:
-                        missing = True
-                        missing_files.append(target)
-                if missing:
-                    print("MISSING FRAMES IN ", key)
-                    print(missing_files)
-
 
 
 
