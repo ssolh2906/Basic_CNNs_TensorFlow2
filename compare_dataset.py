@@ -47,7 +47,8 @@ class SplitDataset():
                     item_path = os.path.join(self.dataset_dir, class_dir,
                                              item)  # os.path.join :  두인자를 하나로 합쳐 1개 경로로 만듬, 경로 + 파일명 >> join(root, class, item)
                     class_subclass = item_path[item_path.find(self.dataset_dir) + len(self.dataset_dir) + 1:]
-                    class_name = class_subclass[:class_subclass.find("/")]
+                    class_name = os.path.split(os.path.split(item_path)[0])[1]
+                    #class_name = class_subclass[:class_subclass.find("/")]
                     if os.path.isdir(item_path):  # 디렉토리면
                         label_names.append({"class": class_name, "subclass": item})  # label name 리스트에 추가 <label name
         return label_names  # class 명을 저장하는 1차원배열, [class1, B001, B002, class2, ...  ] >> list of dictionary [{"class":, "item": },{"class":, "item":}, ....]
