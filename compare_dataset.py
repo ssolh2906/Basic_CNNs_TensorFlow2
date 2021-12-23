@@ -131,6 +131,22 @@ class SplitDataset():
             print("JSON MISSING!")
             print(*self.json_missing, sep='\n')
 
+    def start_comparing(self):
+        all_file_paths = self.__get_all_file_path()
+        targets = ["S01.jpg", "M01.jpg", "E01.jpg"]
+        for action in all_file_paths: #action : dict
+            for key, file_list in action.items():
+                missing = False
+                missing_files = []
+                for target in targets :
+                    if target not in file_list:
+                        missing = True
+                        missing_files.append(target)
+                if missing:
+                    print("MISSING FRAMES IN ", key)
+                    print(missing_files)
+
+
 
 
 
@@ -139,4 +155,4 @@ if __name__ == '__main__':
     split_dataset = SplitDataset(dataset_dir="original_dataset",
                                  saved_dataset_dir="dataset",
                                  show_progress=True)
-    split_dataset.start_splitting()
+    split_dataset.start_comparing()
