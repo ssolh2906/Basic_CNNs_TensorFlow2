@@ -1,6 +1,12 @@
 '''
-args 2개로 이미지 사이즈 입력
-args = x, y
+find image with different size
+move whole set of files from source to destination
+
+source : original_dataset/
+destination : original_dataset/size_exception/
+
+command argument :  -x, -y Image size(pixel) width, height
+                    default -x 224 -y 224
 '''
 import os
 import shutil
