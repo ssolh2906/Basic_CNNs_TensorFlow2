@@ -1,6 +1,10 @@
+
 '''
-args 2개로 이미지 사이즈 입력
-args = x, y
+find image with different size
+print file name and count without moving files
+
+command argument :  -x, -y Image size(pixel) width, height
+                    default -x 224 -y 224
 '''
 import os
 import argparse
