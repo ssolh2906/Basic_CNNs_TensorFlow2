@@ -6,6 +6,12 @@ from configuration import TRAIN_SET_RATIO, TEST_SET_RATIO
 # Split Dataset 3
 # Start~End frame 들을 한 세트로 움직임
 
+# input : \original_dataset\[class]\[subclass]
+
+# output :  \dataset\[class]\[train]\[subclass]
+#           \dataset\[class]\[valid]\[subclass]
+#           \dataset\[class]\[test]\[subclass]
+
 class SplitDataset():
     def __init__(self, dataset_dir, saved_dataset_dir, train_ratio=TRAIN_SET_RATIO, test_ratio=TEST_SET_RATIO,
                  show_progress=False):
