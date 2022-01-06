@@ -3,8 +3,10 @@ import random
 import shutil
 from configuration import TRAIN_SET_RATIO, TEST_SET_RATIO
 
-# Split Dataset 3
-# Start~End frame 들을 한 세트로 움직임
+# compare_dataset
+# 같은 동작인 각각의 Frame들을 하나의 dictionary에 모아
+# ["S01.jpg", "M01.jpg", "E01.jpg"] 가 모두 존재하는지 확인 후 존재하지 않으면
+# MISSING FRAME 정보를 std out 으로 보여줌
 
 class SplitDataset():
     def __init__(self, dataset_dir, saved_dataset_dir, train_ratio=TRAIN_SET_RATIO, test_ratio=TEST_SET_RATIO,
